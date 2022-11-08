@@ -37,7 +37,6 @@ from yahoo_panoptes.framework.utilities.helpers import get_calling_module_name, 
 from yahoo_panoptes.framework.utilities.key_value_store import PanoptesKeyValueStore
 from yahoo_panoptes.framework.utilities.message_queue import PanoptesMessageQueueProducer
 
-
 class PanoptesContextError(PanoptesBaseException):
     """
     A class that encapsulates all context creation errors

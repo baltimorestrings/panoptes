@@ -1,0 +1,13 @@
+We have a whole damn ZK instance in the testing framework:
+  - Ideally, rip it out and mock, but that might not be possible / ideal, so:
+  - If we continue to use real ZK, throw a check in the test that alarms if tests are run with a ZK_VERSION diff from setup.cfg
+
+Asserts -> appropriate errors:
+  all ValueErrors?
+  custom Error?
+
+Either way, stop throwing away exception data at low levels while reraising exception higher. 
+
+Also would be cool to shorten some stack traces, but see above, might have to pick one goal out of two, not both.
+
+Redo testing harness as mixin

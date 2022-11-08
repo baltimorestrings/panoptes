@@ -13,9 +13,9 @@ import signal
 import time
 import traceback
 import re
+
 from influxdb import InfluxDBClient
 from influxdb.exceptions import InfluxDBClientError
-
 from yahoo_panoptes.framework import const
 from yahoo_panoptes.framework.context import PanoptesContext
 from yahoo_panoptes.framework.resources import PanoptesResourcesKeyValueStore
