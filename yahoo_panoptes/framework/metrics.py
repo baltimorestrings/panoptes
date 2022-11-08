@@ -263,7 +263,7 @@ class PanoptesMetricsGroup(object):
 
         return copied_metrics_group
 
-    def add_metric(self, metric):
+    def add_metric(self, metric: PanoptesMetric):
         assert PanoptesMetricValidators.valid_panoptes_metric(metric), u'metric must be an instance of PanoptesMetric'
 
         if metric.metric_name in self.__metrics_index[metric.metric_type]:
@@ -425,6 +425,22 @@ class PanoptesMetricsGroupSet(object):
     @property
     def metrics_groups(self):
         return self._metrics_groups
+
+    def get_json_strings(self, mute_timestamps=True, compact=False, indent=4):
+        """Return pretty representation"""
+        indent_args = {"indent": indent} if (compact or indent != 4) else {}
+        metrics_group_json_strings = list()
+        for metrics_group in self._metrics_groups:
+            metrics_group_dict = json.loads(metrics_group.json)
+            if mute_timestamps:
+                metrics_group_dict.pop("metrics_group_creation_timestamp", None)
+                metrics_group_dict["resource"].pop("resource_creation_timestamp", None)
+                for metric in metrics_group_dict["metrics"]:
+                    metric.pop("metric_creation_timestamp", None)
+            metrics_group_json_strings.append(metrics_group_dict)
+        return json.dumps(metrics_group_json_strings, **indent_args)
+
+
 
     def __add__(self, other):
         if not other or not isinstance(other, PanoptesMetricsGroupSet):

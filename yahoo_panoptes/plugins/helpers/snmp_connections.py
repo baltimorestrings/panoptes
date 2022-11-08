@@ -156,6 +156,8 @@ class PanoptesSNMPSteamRollerAgentConnection(PanoptesSNMPConnection):
         If secure_connection is mandated, a bad key/cert will throw an AssertionError.  If optional, it'll use an
         insecure connection as a fallback.
 
+        TODO: wrap exceptions up in PanoptesSNMPException to match the pattern of the other possible SNMP types
+
         Args:
             secure_connection (int): Whether the connection should be secure 0 - No, 1 - Optional, 2 - Yes
             cert_file (string): Absolute path and filename to the supplied cert

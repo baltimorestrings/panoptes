@@ -8,6 +8,7 @@ from time import sleep
 
 from kazoo.client import KazooState
 from kazoo.testing import KazooTestCase
+from os import environ
 from mock import patch
 
 from yahoo_panoptes.framework.context import PanoptesContext
@@ -15,6 +16,11 @@ from yahoo_panoptes.framework.utilities.lock import PanoptesLock
 
 
 class TestPanoptesLock(KazooTestCase):
+    @staticmethod
+    def setUpClass() -> None:
+        """Set ZK env var """
+        environ["ZOOKEEPER_VERSION"] = "3.7.0"
+
     @staticmethod
     def make_event():
         return threading.Event()

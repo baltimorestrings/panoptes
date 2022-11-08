@@ -157,7 +157,6 @@ class PanoptesEnrichmentSet(object):
 
     def __hash__(self):
         return hash(self._key)
-
     def __len__(self):
         return len(self.__data[self._key])
 
@@ -173,6 +172,7 @@ class PanoptesEnrichmentSet(object):
         if not isinstance(other, PanoptesEnrichmentSet):
             return False
         return self._key == other._key
+
 
 
 class PanoptesEnrichmentGroup(object):

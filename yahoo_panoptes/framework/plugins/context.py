@@ -8,6 +8,9 @@ The context of plugin contains it's configuration, the logger it should use, the
 optional, arbitrary data object to be passed to the plugin
 """
 from builtins import object
+from typing import Type
+
+from yahoo_panoptes.framework.resources import PanoptesResource
 from yahoo_panoptes.framework.context import PanoptesContext, PanoptesContextValidators
 from yahoo_panoptes.framework.utilities.key_value_store import PanoptesKeyValueStore
 from yahoo_panoptes.framework.validators import PanoptesValidators
@@ -42,7 +45,7 @@ class PanoptesPluginContext(object):
         data(object): An optional data object which would be passed through to the plugin being executed
     """
 
-    def __init__(self, panoptes_context, logger_name, config, key_value_store, secrets_store, data=None):
+    def __init__(self, panoptes_context, logger_name, config, key_value_store, secrets_store, data: Type[PanoptesResource]=None):
         assert PanoptesContextValidators.valid_panoptes_context(
             panoptes_context), u'panoptes_context must be an instance of PanoptesContext'
         assert PanoptesValidators.valid_nonempty_string(logger_name), u'logger_name must be a non-empty str'
@@ -56,7 +59,7 @@ class PanoptesPluginContext(object):
         self._config = config
         self._kv_store = key_value_store
         self._secrets_store = secrets_store
-        self._data = data
+        self._data: Type[PanoptesResource] = data
         self._sites = panoptes_context.config_object.sites
         self._snmp_defaults = panoptes_context.config_object.snmp_defaults
         self._x509_defaults = panoptes_context.config_object.x509_defaults
@@ -103,7 +106,7 @@ class PanoptesPluginContext(object):
         return self._secrets_store
 
     @property
-    def data(self):
+    def data(self) -> Type[PanoptesResource]:
         """
         The data object passed to the plugin
 

@@ -6,7 +6,7 @@ import requests_mock
 from mock import patch, Mock
 
 
-from yahoo_panoptes.consumers.influxdb.consumer import PanoptesInfluxDBConsumer
+from yahoo_panoptes.consumers.influxdb_consumer.consumer import PanoptesInfluxDBConsumer
 from yahoo_panoptes.framework.context import PanoptesContext, PanoptesContextError
 from tests.test_framework import PanoptesMockRedis
 from tests.mock_panoptes_consumer import MockPanoptesConsumer, mock_get_client_id
@@ -46,7 +46,7 @@ class TestPanoptesInfluxDBConsumer(unittest.TestCase):
         mock_argument_parser = Mock()
         attributes = {u'parse_known_args.side_effect': Exception}
         mock_argument_parser.configure_mock(**attributes)
-        with patch('yahoo_panoptes.consumers.influxdb.consumer.argparse.ArgumentParser', mock_argument_parser):
+        with patch('yahoo_panoptes.consumers.influxdb_consumer.consumer.argparse.ArgumentParser', mock_argument_parser):
             with self.assertRaises(SystemExit):
                 PanoptesInfluxDBConsumer.factory()
                 unittest.main(exit=False)
@@ -56,59 +56,60 @@ class TestPanoptesInfluxDBConsumer(unittest.TestCase):
             PanoptesInfluxDBConsumer('non.existent.config.file')
             unittest.main(exit=False)
 
-    @patch('yahoo_panoptes.consumers.influxdb.consumer.PanoptesInfluxDBConnection', MockInfluxDBConnection)
-    @patch('yahoo_panoptes.consumers.influxdb.consumer.DEFAULT_CONFIG_FILE',
-           'tests/consumers/influxdb/conf/influxdb_consumer.ini')
+    @patch('yahoo_panoptes.consumers.influxdb_consumer.consumer.PanoptesInfluxDBConnection', MockInfluxDBConnection)
+    @patch('yahoo_panoptes.consumers.influxdb_consumer.consumer.DEFAULT_CONFIG_FILE',
+           'tests/consumers/influxdb_consumer/conf/influxdb_consumer.ini')
     def test_panoptes_influxdb_consumer_bad_context(self):
         """Test with bad PanoptesContext"""
         with self.assertRaises(SystemExit):
             PanoptesInfluxDBConsumer.factory()
             unittest.main(exit=False)
 
-    @patch('yahoo_panoptes.consumers.influxdb.consumer.PanoptesConsumer', MockPanoptesConsumer)
+    @patch('yahoo_panoptes.consumers.influxdb_consumer.consumer.PanoptesConsumer', MockPanoptesConsumer)
     @patch('redis.StrictRedis', PanoptesMockRedis)
-    @patch('yahoo_panoptes.consumers.influxdb.consumer.PanoptesInfluxDBConsumerContext', MockPanoptesContext)
-    @patch('yahoo_panoptes.consumers.influxdb.consumer.get_client_id', mock_get_client_id)
-    @patch('yahoo_panoptes.consumers.influxdb.consumer.PanoptesInfluxDBConnection', MockInfluxDBConnection)
-    @patch('yahoo_panoptes.consumers.influxdb.consumer.DEFAULT_CONFIG_FILE',
-           'tests/consumers/influxdb/conf/influxdb_consumer.ini')
+    @patch('yahoo_panoptes.consumers.influxdb_consumer.consumer.PanoptesInfluxDBConsumerContext', MockPanoptesContext)
+    @patch('yahoo_panoptes.consumers.influxdb_consumer.consumer.get_client_id', mock_get_client_id)
+    @patch('yahoo_panoptes.consumers.influxdb_consumer.consumer.PanoptesInfluxDBConnection', MockInfluxDBConnection)
+    @patch('yahoo_panoptes.consumers.influxdb_consumer.consumer.DEFAULT_CONFIG_FILE',
+           'tests/consumers/influxdb_consumer/conf/influxdb_consumer.ini')
     def test_panoptes_influxdb_connection_ping_exception(self):
-        with patch('yahoo_panoptes.consumers.influxdb.consumer.PanoptesInfluxDBConnection.ping',
+        with patch('yahoo_panoptes.consumers.influxdb_consumer.consumer.PanoptesInfluxDBConnection.ping',
                    Mock(side_effect=Exception)):
             with self.assertRaises(SystemExit):
                 PanoptesInfluxDBConsumer.factory()
                 unittest.main(exit=False)
 
-    @patch('yahoo_panoptes.consumers.influxdb.consumer.PanoptesConsumer', MockPanoptesConsumer)
+    @patch('yahoo_panoptes.consumers.influxdb_consumer.consumer.PanoptesConsumer', MockPanoptesConsumer)
     @patch('redis.StrictRedis', PanoptesMockRedis)
-    @patch('yahoo_panoptes.consumers.influxdb.consumer.PanoptesInfluxDBConsumerContext', MockPanoptesContext)
-    @patch('yahoo_panoptes.consumers.influxdb.consumer.get_client_id', mock_get_client_id)
-    @patch('yahoo_panoptes.consumers.influxdb.consumer.PanoptesInfluxDBConnection', MockInfluxDBConnection)
-    @patch('yahoo_panoptes.consumers.influxdb.consumer.DEFAULT_CONFIG_FILE',
-           'tests/consumers/influxdb/conf/influxdb_consumer.ini')
+    @patch('yahoo_panoptes.consumers.influxdb_consumer.consumer.PanoptesInfluxDBConsumerContext', MockPanoptesContext)
+    @patch('yahoo_panoptes.consumers.influxdb_consumer.consumer.get_client_id', mock_get_client_id)
+    @patch('yahoo_panoptes.consumers.influxdb_consumer.consumer.PanoptesInfluxDBConnection', MockInfluxDBConnection)
+    @patch('yahoo_panoptes.consumers.influxdb_consumer.consumer.DEFAULT_CONFIG_FILE',
+           'tests/consumers/influxdb_consumer/conf/influxdb_consumer.ini')
     def test_panoptes_influxdb_connection_create_database_exception(self):
-        with patch('yahoo_panoptes.consumers.influxdb.consumer.PanoptesInfluxDBConnection.create_database',
+        with patch('yahoo_panoptes.consumers.influxdb_consumer.consumer.PanoptesInfluxDBConnection.create_database',
                    Mock(side_effect=Exception)):
             with self.assertRaises(SystemExit):
                 PanoptesInfluxDBConsumer.factory()
                 unittest.main(exit=False)
 
-    @patch('yahoo_panoptes.consumers.influxdb.consumer.PanoptesConsumer', MockPanoptesConsumer)
+    @patch('yahoo_panoptes.consumers.influxdb_consumer.consumer.PanoptesConsumer', MockPanoptesConsumer)
     @patch('redis.StrictRedis', PanoptesMockRedis)
-    @patch('yahoo_panoptes.consumers.influxdb.consumer.PanoptesInfluxDBConsumerContext', MockPanoptesContext)
-    @patch('yahoo_panoptes.consumers.influxdb.consumer.get_client_id', mock_get_client_id)
-    @patch('yahoo_panoptes.consumers.influxdb.consumer.PanoptesInfluxDBConnection', MockInfluxDBConnection)
-    @patch('yahoo_panoptes.consumers.influxdb.consumer.DEFAULT_CONFIG_FILE',
-           'tests/consumers/influxdb/conf/influxdb_consumer.ini')
+    @patch('yahoo_panoptes.consumers.influxdb_consumer.consumer.PanoptesInfluxDBConsumerContext', MockPanoptesContext)
+    @patch('yahoo_panoptes.consumers.influxdb_consumer.consumer.get_client_id', mock_get_client_id)
+    @patch('yahoo_panoptes.consumers.influxdb_consumer.consumer.PanoptesInfluxDBConnection', MockInfluxDBConnection)
+    @patch('yahoo_panoptes.consumers.influxdb_consumer.consumer.DEFAULT_CONFIG_FILE',
+           'tests/consumers/influxdb_consumer/conf/influxdb_consumer.ini')
     def test_panoptes_influxdb_consumer(self):
         """Test sending metrics through the InfluxDB client"""
 
         output_data_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), u'output/influx_line00.data')
+        print(f"YOi {output_data_file}")
 
         output_data = open(output_data_file).read()
 
         MockPanoptesConsumer.files = [
-            u'consumers/influxdb/input/metrics_group00.json',
+            u'consumers/influxdb_consumer/input/metrics_group00.json',
         ]
 
         with requests_mock.Mocker() as m:
